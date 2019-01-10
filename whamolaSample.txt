@@ -2,23 +2,25 @@ http://users.wpi.edu/~isgelman/docs/whamola/whamolaSample.wav
 
 Notes in order of play:
 
-D 73
-C# 69
-Eb 77 
-C 65
-D 73
-Bb 58
-D 73
-Ab 52
-F 43
-D 73
+The first section is the string played manually, with the tension controlled by hand
+D2 ~73Hz
+C#2 ~69Hz
+Eb2 ~77Hz 
+C2 ~65Hz
+D2 ~73Hz
+Bb1 ~58Hz
+D2 ~73Hz
+Ab1 ~52Hz
+F1 ~43Hz
+D2 ~73Hz
 
-Eb 77
-D 73 
-C# 69
-C 65
-B 61
-A 55
-G 49
-E 41
-C# 34
+The second section is the string played automatically, with the tension controlled by hand
+Eb2 ~77Hz
+D2 ~73Hz
+C#2 ~69Hz
+C2 ~65Hz
+B1 ~61Hz
+A1 ~55Hz
+G1 ~49Hz
+E1 ~41Hz
+C#1 ~34Hz

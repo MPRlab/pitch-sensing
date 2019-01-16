@@ -14,4 +14,8 @@ int main() {
   pc.printf("Starting ACF\r\n");
   getADCShit.attach_us(&readSample, PERIOD);
   avgThread.start(FreqCalc);
+  pc.printf("Threads worked.\n");
+  while(1){
+    pc.printf("%f\n",freq_per);
+  }
 }

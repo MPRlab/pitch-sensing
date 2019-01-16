@@ -1,6 +1,18 @@
 #include "yin.h"
 #include "mbed.h"
 
+/* Public global variables */
+CircularBuffer<float, LENGTH> input;
+
+/* YIN Globals */
+float rawData[LENGTH];
+int tau, j; //Variables for the sums and finding the lag
+float r, rold, rt, rtau, dt, dtold, dtold2, dj; //Different function variables
+int thresh = 0; //Dynamic threshold of when to output frequency
+float freq_per, freq_old, freq_old2, filtered_freq, dpt, dold; //Floats to store frequency and sum data
+char pd_state = 0; //Peak-detection state-machine variable
+AnalogIn myADC(A1);
+
 void readSample(){
     if(!input.full()){
         //input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);

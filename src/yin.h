@@ -16,10 +16,10 @@ extern CircularBuffer<float, LENGTH> input;
 extern float rawData[LENGTH];
 extern int tau, j; //Variables for the sums and finding the lag
 extern float r, rold, rt, rtau, dt, dtold, dtold2, dj; //Different function variables
-extern int thresh = 0; //Dynamic threshold of when to output frequency
+extern int thresh; //Dynamic threshold of when to output frequency
 extern float freq_per, freq_old, freq_old2, filtered_freq, dpt, dold; //Floats to store frequency and sum data
-extern char pd_state = 0; //Peak-detection state-machine variable
-extern AnalogIn myADC(A1);
+extern char pd_state; //Peak-detection state-machine variable
+extern AnalogIn myADC;
 
 /* Function Prototypes */
 void readSample();

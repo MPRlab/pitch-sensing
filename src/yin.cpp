@@ -1,17 +1,18 @@
 #include "yin.h"
+#include "mbed.h"
 
 void readSample(){
-    while(!input.full()){
+    if(!input.full()){
         //input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
-        float32_t inVal = 2 * (myADC.read() - 0.5f);
+        float inVal = 2 * (myADC.read() - 0.5f);
         input.push(inVal);
         //pc.printf("%f\n", input[globalIndex % LENGTH]);
         //globalIndex++;
-        wait_ms(PERIOD); //read a sample @ 200Hz
+        //wait_ms(PERIOD); //read a sample @ 200Hz
     }
 }
 
-float32_t ParaIntrp(int c, float fa, float fb, float fc) {
+float ParaIntrp(int c, float fa, float fb, float fc) {
     int a = c - 2;
     int b = c - 1;
     float x;
@@ -26,8 +27,8 @@ void FreqCalc() {
     while(1){
         if (input.full()) {
             //First empty the buffer into the rawData[] array
-            for(int i = 0; i < LENGTH, i++){
-                rawData[i] = input.pop();
+            for(int i = 0; i < LENGTH; i++){
+                input.pop(rawData[i]);
             }
             dt = 0;
             dtold = 0;
@@ -101,12 +102,11 @@ void FreqCalc() {
                     freq_old = filtered_freq;
                     freq_per = FS / period;
                     filtered_freq = 0.8 * freq_per + 0.1 * freq_old + 0.1 * freq_old2;
-                    if (filtered_freq > ) {
+                    if (filtered_freq > FS) {
                         filtered_freq = freq_old;
                         freq_per = freq_old;
                     }
                 }
-                pc.printf("freq_per");
             }
         }
     }

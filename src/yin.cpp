@@ -2,7 +2,7 @@
 #include "mbed.h"
 
 /* Public global variables */
-CircularBuffer<float, LENGTH> input;
+CircularBuffer<float, (LENGTH * 4)> input;
 
 /* YIN Globals */
 float rawData[LENGTH];
@@ -14,13 +14,11 @@ char pd_state = 0; //Peak-detection state-machine variable
 AnalogIn myADC(A1);
 
 void readSample(){
-    if(!input.full()){
+    while(1){
         //input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
         float inVal = 2 * (myADC.read() - 0.5f);
         input.push(inVal);
-        //pc.printf("%f\n", input[globalIndex % LENGTH]);
-        //globalIndex++;
-        //wait_ms(PERIOD); //read a sample @ 200Hz
+        wait_us(PERIOD);
     }
 }
 
@@ -37,11 +35,15 @@ float ParaIntrp(int c, float fa, float fb, float fc) {
 //and peak - detection state - machine
 void FreqCalc() {
     while(1){
-        if (input.full()) {
+        //printf("%d\n",input.size());
+        //printf("Thread is running\n");
+        if (!(input.size()<LENGTH)) {
+            //printf("Input is full\n");
             //First empty the buffer into the rawData[] array
             for(int i = 0; i < LENGTH; i++){
                 input.pop(rawData[i]);
             }
+            //Init values for YIN           
             dt = 0;
             dtold = 0;
             dtold2 = 0;
@@ -53,7 +55,7 @@ void FreqCalc() {
             pd_state = 0;
             float period = 0;
             int period_old = 0;
-            float current_lowest = 100;
+            float current_lowest = 10;
             for (tau = 0; tau < LENGTH; tau++) {
                 // YIN-Autocorrelation
                 dtold2 = dtold;
@@ -63,7 +65,7 @@ void FreqCalc() {
                 r = 0;
                 dt = 0;
                 dpt = 0;
-                //Serial.println(rawData[tau]);
+                //printf("%f\n",rawData[tau]);
                 for (j = 0; j < LENGTH / 2; j++) {
                     if (j + tau >= LENGTH) {
                         r = 0;
@@ -74,7 +76,7 @@ void FreqCalc() {
                         rt = rawData[j] * rawData[j];
                         rtau = rawData[j + tau] * rawData[j + tau];
                     }
-                    dt += rt + rtau - 2 * r;  //do we really need this 2 here? this may have been absorbed in my previous ADC read. possible neck to choke here
+                    dt += rt + rtau - 2 * r;
                     rold += r;
                 }
 
@@ -105,8 +107,9 @@ void FreqCalc() {
                 if (!tau) {
                     thresh = rold * 0.5;
                     pd_state = 1;
-                }
+                }  
             }
+            printf("took %d iterations\n",tau); 
             // Frequency identified in Hz
             if (thresh > 2) {
                 if (period != 0) {
@@ -120,6 +123,7 @@ void FreqCalc() {
                     }
                 }
             }
+            printf("Locked frequency: %f\n",filtered_freq*250);
         }
     }
 }

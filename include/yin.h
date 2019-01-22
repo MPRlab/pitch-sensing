@@ -24,6 +24,6 @@ extern AnalogIn myADC;
 /* Function Prototypes */
 void readSample();
 float ParaIntrp(int, float, float, float);
-void FreqCalc();
+float FreqCalc();
 
 #endif

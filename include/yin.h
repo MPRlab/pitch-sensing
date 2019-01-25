@@ -7,7 +7,7 @@
 /* ACF settings */
 #define LENGTH 2048 //ACF integration window
 #define FS 200 //200 Hz
-#define PERIOD (1 / FS) * 1000000 //convert to period in us
+#define PERIOD_ACF (1 / FS) * 1000000 //convert to period in us
 
 /* Public global variables */
 extern CircularBuffer<float, (LENGTH * 4)> input;

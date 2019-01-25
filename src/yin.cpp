@@ -34,7 +34,7 @@ float ParaIntrp(int c, float fa, float fb, float fc) {
 //Calculates the frequency of the input signal with YIN Autocorrelation
 //and peak - detection state - machine
 float FreqCalc() {
-    while(1){
+    // while(1){
         //printf("%d\n",input.size());
         //printf("Thread is running\n");
         if (!(input.size()<LENGTH)) {
@@ -126,5 +126,5 @@ float FreqCalc() {
             printf("Locked frequency: %f\n",filtered_freq*250);
             return filtered_freq;
         }
-    }
+    // }
 }

@@ -16,6 +16,6 @@ int main() {
     pc.printf("Started ADC\n");
     acfThread.start(FreqCalc);
     pc.printf("Threads worked.\n");
-
+    
     return 0;
 }

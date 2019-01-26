@@ -10,12 +10,13 @@ int tau, j; //Variables for the sums and finding the lag
 float r, rold, rt, rtau, dt, dtold, dtold2, dj; //Different function variables
 int thresh = 0; //Dynamic threshold of when to output frequency
 float freq_per, freq_old, freq_old2, filtered_freq, dpt, dold; //Floats to store frequency and sum data
+float filtered_freq_old = 0.0f;
 char pd_state = 0; //Peak-detection state-machine variable
 AnalogIn myADC(A3);
 
 void readSample(){
     // while(1){
-        //input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
+        // input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
         float inVal = 2 * (myADC.read() - 0.5f);
         input.push(inVal);
         // wait_us(PERIOD);
@@ -89,7 +90,7 @@ float FreqCalc() {
                 }
                 
                 // Peak Detect State Machine
-                if (pd_state == 2 && dold < dpt && dpt < 0.18) {
+                if (pd_state == 2 && dold < dpt && dpt < PD_FUDGE) {
                     period_old = tau - 1;
                     period = ParaIntrp(tau, dt, dtold, dtold2);
                     pd_state = 3;
@@ -109,7 +110,7 @@ float FreqCalc() {
                     pd_state = 1;
                 }  
             }
-            printf("took %d iterations\n",tau); 
+            printf("took %d iterations\n",tau);
             // Frequency identified in Hz
             if (thresh > 2) {
                 if (period != 0) {
@@ -120,6 +121,11 @@ float FreqCalc() {
                     if (filtered_freq > FS) {
                         filtered_freq = freq_old;
                         freq_per = freq_old;
+                    }
+                    if (tau == LENGTH) {
+                        filtered_freq = filtered_freq_old;
+                    }else{
+                        filtered_freq_old = filtered_freq;
                     }
                 }
             }

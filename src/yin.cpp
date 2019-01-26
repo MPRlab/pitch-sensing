@@ -1,29 +1,22 @@
 #include "yin.h"
-#include "mbed.h"
 
-/* Public global variables */
-CircularBuffer<float, (LENGTH * 4)> input;
 
-/* YIN Globals */
-float rawData[LENGTH];
-int tau, j; //Variables for the sums and finding the lag
-float r, rold, rt, rtau, dt, dtold, dtold2, dj; //Different function variables
-int thresh = 0; //Dynamic threshold of when to output frequency
-float freq_per, freq_old, freq_old2, filtered_freq, dpt, dold; //Floats to store frequency and sum data
-float filtered_freq_old = 0.0f;
-char pd_state = 0; //Peak-detection state-machine variable
-AnalogIn myADC(A3);
+Yin::Yin(PinName analogPort){
+    myADC = new AnalogIn(analogPort);
+}
 
-void readSample(){
+void Yin::readSample(){
     // while(1){
         // input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
-        float inVal = 2 * (myADC.read() - 0.5f);
+        float inVal = 2 * (myADC->read() - 0.5f);
         input.push(inVal);
-        // wait_us(PERIOD);
+        // printf("inVal: %f\tID: %f\n", inVal, Thread::getid());
+        // wait_us(PERIOD_ACF);
+    //     Thread::wait(5);
     // }
 }
 
-float ParaIntrp(int c, float fa, float fb, float fc) {
+float Yin::ParaIntrp(int c, float fa, float fb, float fc) {
     int a = c - 2;
     int b = c - 1;
     float x;
@@ -34,7 +27,7 @@ float ParaIntrp(int c, float fa, float fb, float fc) {
 
 //Calculates the frequency of the input signal with YIN Autocorrelation
 //and peak - detection state - machine
-float FreqCalc() {
+float Yin::FreqCalc() {
     // while(1){
         //printf("%d\n",input.size());
         //printf("Thread is running\n");

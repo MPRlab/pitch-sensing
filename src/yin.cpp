@@ -12,14 +12,17 @@ int thresh = 0; //Dynamic threshold of when to output frequency
 float freq_per, freq_old, freq_old2, filtered_freq, dpt, dold; //Floats to store frequency and sum data
 float filtered_freq_old = 0.0f;
 char pd_state = 0; //Peak-detection state-machine variable
-AnalogIn myADC(A1);
+AnalogIn myADC(A3);
 
 void readSample(){
-    while(1){
+    // while(1){
+    for(int i=0; i < LENGTH; i++){
         //input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
         float inVal = 2 * (myADC.read() - 0.5f);
-        input.push(inVal);
+        // input.push(inVal);
+        rawData[i] = inVal;
         wait_us(PERIOD_ACF);
+    // }
     }
 }
 
@@ -32,18 +35,24 @@ float ParaIntrp(int c, float fa, float fb, float fc) {
     return x;
 }
 
+float regret(float inFreq){
+    return (-0.0126108363 * pow(inFreq, 2)) + (3.10956197 * inFreq) - 14.5850791; 
+}
+
 //Calculates the frequency of the input signal with YIN Autocorrelation
 //and peak - detection state - machine
 void FreqCalc() {
-    while(1){
+    // while(1){
         //printf("%d\n",input.size());
         //printf("Thread is running\n");
-        if (!(input.size()<LENGTH)) {
+        // if (!(input.size()<LENGTH)) {
             //printf("Input is full\n");
             //First empty the buffer into the rawData[] array
+            /*
             for(int i = 0; i < LENGTH; i++){
                 input.pop(rawData[i]);
             }
+            */
             //Init values for YIN           
             dt = 0;
             dtold = 0;
@@ -129,7 +138,8 @@ void FreqCalc() {
                     }
                 }
             }
-            printf("Locked frequency: %f\n",filtered_freq*250);
-        }
-    }
+            float disp_freq = regret(filtered_freq*250);
+            printf("Locked frequency: %f\n",disp_freq);
+        // }
+    // }
 }

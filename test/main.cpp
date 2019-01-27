@@ -17,7 +17,7 @@ int main() {
     // acfThread.start(FreqCalc);
     // pc.printf("Threads worked.\n");
     while(1){
-        readSample();
+        readSamples();
         FreqCalc();
     }
     

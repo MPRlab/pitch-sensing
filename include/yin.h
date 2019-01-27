@@ -23,7 +23,7 @@ extern AnalogIn myADC;
 #define PD_FUDGE 0.5
 
 /* Function Prototypes */
-void readSample();
+void readSamples();
 float ParaIntrp(int, float, float, float);
 float regret(float);
 void FreqCalc();

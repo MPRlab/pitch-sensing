@@ -14,7 +14,7 @@ float filtered_freq_old = 0.0f;
 char pd_state = 0; //Peak-detection state-machine variable
 AnalogIn myADC(A3);
 
-void readSample(){
+void readSamples(){
     // while(1){
     for(int i=0; i < LENGTH; i++){
         //input[globalIndex % LENGTH] = 2 * (myADC.read() - 0.5f);
@@ -24,6 +24,7 @@ void readSample(){
         wait_us(PERIOD_ACF);
     // }
     }
+
 }
 
 float ParaIntrp(int c, float fa, float fb, float fc) {
@@ -36,12 +37,13 @@ float ParaIntrp(int c, float fa, float fb, float fc) {
 }
 
 float regret(float inFreq){
-    return (-0.0126108363 * pow(inFreq, 2)) + (3.10956197 * inFreq) - 14.5850791; 
+    // return (-0.0126108363 * pow(inFreq, 2)) + (3.10956197 * inFreq) - 16.5850791; 
+    return (-0.00219981522 * pow(inFreq, 2) + 2.33596411 * inFreq - 4.69359370);
 }
 
 //Calculates the frequency of the input signal with YIN Autocorrelation
 //and peak - detection state - machine
-void FreqCalc() {
+float FreqCalc() {
     // while(1){
         //printf("%d\n",input.size());
         //printf("Thread is running\n");
@@ -139,7 +141,9 @@ void FreqCalc() {
                 }
             }
             float disp_freq = regret(filtered_freq*250);
-            printf("Locked frequency: %f\n",disp_freq);
+            // printf("Locked frequency: %f\n",disp_freq);
+            return disp_freq;
+            // return filtered_freq*250;
         // }
     // }
 }

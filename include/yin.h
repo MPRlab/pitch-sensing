@@ -1,7 +1,7 @@
 #ifndef _YIN_H
 #define _YIN_H
 #include "mbed.h"
-#include "rtos.h"
+// #include "rtos.h"
 #include "platform/CircularBuffer.h"
 
 /* ACF settings */
@@ -11,7 +11,6 @@
 
 /* Public global variables */
 extern CircularBuffer<float, (LENGTH * 4)> input;
-
 /* YIN Globals */
 extern float rawData[LENGTH];
 extern int tau, j; //Variables for the sums and finding the lag
@@ -26,6 +25,6 @@ extern AnalogIn myADC;
 void readSamples();
 float ParaIntrp(int, float, float, float);
 float regret(float);
-void FreqCalc();
+float FreqCalc();
 
 #endif 

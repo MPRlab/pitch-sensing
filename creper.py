@@ -10,7 +10,7 @@ from scipy.io import wavfile
 import pandas as pd
 from os.path import splitext
 
-def creper(filepath, timesteps=[10, 20, 50, 100, 500, 1000]):
+def creper(filepath, timesteps=[1, 5, 10, 20, 50, 100, 500, 1000]):
     '''Runs CREPE on .wav file for all model sizes and
     for all user-defined timesteps (ms).'''
     
@@ -30,9 +30,9 @@ def creper(filepath, timesteps=[10, 20, 50, 100, 500, 1000]):
                 df=pd.DataFrame(data,columns=['Time', 'Frequency', 'Confidence'])
                 df.to_excel(writer, sheet_name=f'{model}_{timestep}')
                 
-                print(f'Model {model}, Timestep (ms): {timestep} Complete.')
+                print(f'Model: {model}, Timestep (ms): {timestep}. Complete.')
             
 if __name__=='__main__':
     #Calls creper function on arbitrary example file
-    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\320.wav"
-    creper(filepath, timesteps=[10,20])
+    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\pitch detection VI.wav"
+    creper(filepath)

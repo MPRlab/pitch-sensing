@@ -42,4 +42,5 @@ def chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False):
 if __name__=='__main__':
     #meas_start=68.8 Note: C#2/Db2, 69.30  Hz, Index: 25
     #meas_end=524.3  Note: C5     , 523.25 Hz, Index: 60
-    chromatic_scale(0.250,25,60)
+    t,y=chromatic_scale(0.250,25,60,plot=True)
+    print(t[-1])

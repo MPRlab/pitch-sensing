@@ -12,7 +12,7 @@ scatter3(mat(21:40,1),mat(21:40,2),mat(21:40,3));
 scatter3(mat(41:60,1),mat(41:60,2),mat(41:60,3));
 scatter3(mat(61:80,1),mat(61:80,2),mat(61:80,3));
 scatter3(mat(81:100,1),mat(81:100,2),mat(81:100,3));
-title('Tiny Model CREPE Ouput')
+title('Full Model CREPE Ouput')
 xlabel('Confidence'); 
 ylabel('Timestep (ms)');
 zlabel('Ave. Error (cents)');

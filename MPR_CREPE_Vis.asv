@@ -12,7 +12,7 @@ timegap=data.LargestTimeGapms(:,:);
 
 mat=[conf timestep ave_error];
 
-%Graph Error, % of Original Data, and Max. Timestep for each model
+%Graph Error, % of 
 n=1;
 for model=1:5
     switch model
@@ -41,12 +41,6 @@ for model=1:5
     xlabel('Confidence'); 
     ylabel('Timestep (ms)');
     zlabel('% of Original Data');
-
-    figure(n+2)
-    scatter3(mat(start_idx:end_idx,1),mat(start_idx:end_idx,2),timegap(start_idx:end_idx))
-    title(strcat('CREPE Output, Max. Time Gap, Model: ',name))
-    xlabel('Confidence'); 
-    ylabel('Timestep (ms)');
-    zlabel('Max. Time Gap (ms)');
-    n=n+3;
+    
+    n=n+2;
 end

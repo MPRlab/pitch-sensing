@@ -131,7 +131,9 @@ if __name__=='__main__':
     #Calls creper function on chromatic scale example file
     filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\chromaticscale_250.wav"
     divisions=20
+    timesteps_input=[ii for ii in range(5,105,5)]
+    timesteps_input.insert(0,1)
     creper(filepath, 
            models=['tiny', 'small', 'medium', 'large', 'full'], 
-           timesteps=[ii for ii in range(5,105,5)],
+           timesteps=timesteps_input,
            conf_filters=[ii/divisions for ii in range(0,divisions,1)])

@@ -35,14 +35,14 @@ for model=1:5
     ylabel('Timestep (ms)');
     zlabel('Ave. Error (cents)');
 
-    figure(n+1)
+    figure(n+1);
     scatter3(mat(start_idx:end_idx,1),mat(start_idx:end_idx,2),percent_orig_data(start_idx:end_idx))
     title(strcat('CREPE Output, % of Original Data, Model: ',name))
     xlabel('Confidence'); 
     ylabel('Timestep (ms)');
     zlabel('% of Original Data');
 
-    figure(n+2)
+    figure(n+2);
     scatter3(mat(start_idx:end_idx,1),mat(start_idx:end_idx,2),timegap(start_idx:end_idx))
     title(strcat('CREPE Output, Max. Time Gap, Model: ',name))
     xlabel('Confidence'); 

@@ -18,9 +18,10 @@ def creper(filepath,
            models=['tiny', 'small', 'medium', 'large', 'full'], 
            timesteps=[1, 5, 10, 20, 50, 100, 500, 1000],
            conf_filters=[ii/20 for ii in range(0,20,1)]):
-    '''Runs CREPE on .wav file for all model sizes and
-    for all user-defined timesteps (ms).  Compares CREPE
-    output with ideal frequencies from reference data.'''
+    '''Runs CREPE on .wav file for all model sizes,
+    for all timesteps (ms), and filters results by confidence
+    level.  Compares CREPE output with ideal frequencies from
+    reference data.'''
     
     if type(models)==str:
         models=[models]

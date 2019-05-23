@@ -8,7 +8,36 @@ from os.path import splitext
 import crepe
 from scipy.io import wavfile
 import time as timelib
+from numpy import arange
 
+def freq_generator(sequence,ioi,dt,descent=False):
+    '''Generates list of true frequency values over time given sequence (dict),
+    ioi, and sample rate (dt).'''
+    start_time=0
+    stop_time=start_time+ioi
+    time=[]
+    y=[]
+    max_freq_idx=max(sequence.keys())
+    
+    #List proper frequency for each timestep in ascending order
+    for freq_idx in range(0,max_freq_idx+1):
+        for idx, t in enumerate(arange(start_time,stop_time,dt)):
+            y.append(sequence[freq_idx])
+            time.append(t)
+        start_time=stop_time+dt
+        stop_time=start_time+ioi
+    
+    if descent==True:
+        #List proper frequency for each timestep in descending order
+        for freq_idx in reversed(range(0,max_freq_idx+1)):
+            for idx, t in enumerate(arange(start_time,stop_time,dt)):
+                y.append(sequence[freq_idx])
+                time.append(t)
+            start_time=stop_time
+            stop_time=start_time+ioi
+            
+    return time, y
+        
 class PitchSense:
     '''For easy implementation of various pitch detection
        algorithms, comparing to reference data, and plotting.'''

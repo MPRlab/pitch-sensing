@@ -17,7 +17,8 @@ from os.path import splitext
 def creper(filepath, 
            models=['tiny', 'small', 'medium', 'large', 'full'], 
            timesteps=[1, 5, 10, 20, 50, 100, 500, 1000],
-           conf_filters=[ii/20 for ii in range(0,20,1)]):
+           conf_filters=[ii/20 for ii in range(0,20,1)],
+           noise_threshold=25):
     '''Runs CREPE on .wav file for all model sizes,
     for all timesteps (ms), and filters results by confidence
     level.  Compares CREPE output with ideal frequencies from
@@ -48,11 +49,21 @@ def creper(filepath,
                 
                 #Build dataset for pandas
                 cents_error=[1200*log(frequency[i]/y_scale[i],2) for i in range(0,len(time))]
+                
+                #Tag noise/data based on user-defined threshold
+                tags=[]
+                for i in range(0,len(time)):
+                    if abs(cents_error[i])>=noise_threshold:
+                        tags.append('noise')
+                    else:
+                        tags.append('pitch')
+                        
                 data={'Time':time, 
                       'Frequency':frequency, 
                       'Confidence':confidence,
                       'Ideal Frequency':y_scale[0:len(time)],
-                      'Errors (Cents)':cents_error}
+                      'Errors (Cents)':cents_error,
+                      'Tag': tags}
                 
                 #Get column names
                 cols=[label for label, _ in data.items()]
@@ -73,7 +84,6 @@ def creper(filepath,
                     elapsed_time=round(end-start,6)
                     
                     #Calculate largest time interval between samples
-                    #filtered_df_rows=len(filtered_df)
                     filtered_df_indices=list(filtered_df.index)
                     biggest_time_gap=0
                     if filtered_df_indices:
@@ -98,6 +108,8 @@ def creper(filepath,
                     
                     percent_of_original_data=len(filtered_df)/len(df)*100
                     
+                    percent_of_pitch=tags.count('pitch')/len(filtered_df)*100
+                    
                     #Log Summary Data
                     df_sum=pd.DataFrame({'Model':[model],
                                          'Timestep (ms)':[timestep],
@@ -105,7 +117,9 @@ def creper(filepath,
                                          'Ave. Error (cents)':[ave_error],
                                          'CREPE Runtime (s)':[elapsed_time],
                                          'Largest Time Gap (ms)': [biggest_time_gap],
-                                         'Percent of Original Data (%)': [percent_of_original_data]})
+                                         'Percent of Original Data (%)': [percent_of_original_data],
+                                         'Percent of Pitch Tags (%)': [percent_of_pitch]})
+                    
                     if counter==0: #First Iteration
                         startrow_arg=0
                         header_arg=True
@@ -124,17 +138,22 @@ def creper(filepath,
                           f"Ave. Error (cents): {ave_error}, " +
                           f"CREPE Runtime (s): {elapsed_time}, " +
                           f"Largest Time Gap (ms): {biggest_time_gap}, " +
-                          f"Percent of Original Data (%): {percent_of_original_data}.")
+                          f"Percent of Original Data (%): {percent_of_original_data}, " +
+                          f'Percent of Pitch Tags (%): {percent_of_pitch}')
                     
                     counter+=1
                     
 if __name__=='__main__':
     #Calls creper function on chromatic scale example file
     filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\chromaticscale_250.wav"
-    divisions=20
-    timesteps_input=[ii for ii in range(5,105,5)]
-    timesteps_input.insert(0,1)
+    #divisions=20
+    #timesteps_input=[ii for ii in range(5,105,5)]
+    #timesteps_input.insert(0,1)
+#    creper(filepath, 
+#           models=['tiny', 'small', 'medium', 'large', 'full'], 
+#           timesteps=timesteps_input,
+#           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
     creper(filepath, 
-           models=['tiny', 'small', 'medium', 'large', 'full'], 
-           timesteps=timesteps_input,
-           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
+           models=['tiny'], 
+           timesteps=[20],
+           conf_filters=[0,0.8])

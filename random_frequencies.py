@@ -3,7 +3,7 @@
 Frequencies for random sequences
 """
 
-freqs={0:130.8128,
+rfreqs={0:130.8128,
        1:311.1270,
        2:164.8138,
        3:329.6276,

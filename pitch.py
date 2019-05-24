@@ -10,26 +10,28 @@ from scipy.io import wavfile
 import time as timelib
 from numpy import arange
 
-def freq_generator(sequence,ioi,dt,descent=False):
+def freq_generator(sequence,ioi,dt,ascent=True,descent=False):
     '''Generates list of true frequency values over time given sequence (dict),
-    ioi, and sample rate (dt).'''
+    ioi, and timestep (dt).'''
     start_time=0
     stop_time=start_time+ioi
     time=[]
     y=[]
+    min_freq_idx=min(sequence.keys())
     max_freq_idx=max(sequence.keys())
     
-    #List proper frequency for each timestep in ascending order
-    for freq_idx in range(0,max_freq_idx+1):
-        for idx, t in enumerate(arange(start_time,stop_time,dt)):
-            y.append(sequence[freq_idx])
-            time.append(t)
-        start_time=stop_time+dt
-        stop_time=start_time+ioi
+    if ascent==True:
+        #List proper frequency for each timestep in ascending order
+        for freq_idx in range(min_freq_idx,max_freq_idx+1):
+            for idx, t in enumerate(arange(start_time,stop_time,dt)):
+                y.append(sequence[freq_idx])
+                time.append(t)
+            start_time=stop_time+dt
+            stop_time=start_time+ioi
     
     if descent==True:
         #List proper frequency for each timestep in descending order
-        for freq_idx in reversed(range(0,max_freq_idx+1)):
+        for freq_idx in reversed(range(min_freq_idx,max_freq_idx+1)):
             for idx, t in enumerate(arange(start_time,stop_time,dt)):
                 y.append(sequence[freq_idx])
                 time.append(t)
@@ -76,6 +78,9 @@ class PitchSense:
         
 #    def compare(self, model):
 #        '''Compares model predictions to reference frequencies.'''
+
+#    def export(self):
+#        '''Exports data to csv.'''
         
 #    def plot(self):
 #        '''Plots Error, % of Data Lost and Largest Time Gap'''

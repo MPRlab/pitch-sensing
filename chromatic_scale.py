@@ -27,7 +27,7 @@ def chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False):
         for idx, t in enumerate(np.arange(start_time,stop_time,dt)):
             y.append(freqs[freq_idx])
             time.append(t)
-        start_time=stop_time
+        start_time=stop_time+dt
         stop_time=start_time+ioi   
     
     if plot==True:    

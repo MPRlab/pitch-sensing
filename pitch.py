@@ -35,7 +35,7 @@ def freq_generator(sequence,ioi,dt,ascent=True,descent=False):
             for idx, t in enumerate(arange(start_time,stop_time,dt)):
                 y.append(sequence[freq_idx])
                 time.append(t)
-            start_time=stop_time
+            start_time=stop_time+dt
             stop_time=start_time+ioi
             
     return time, y

@@ -14,7 +14,7 @@ import time as timelib
 import pandas as pd
 from os.path import splitext
 from pitch import freq_generator
-from random_frequencies import rfreqs
+from note_frequencies import freqs
 
 def creper(filepath, 
            #t_true,
@@ -41,11 +41,12 @@ def creper(filepath,
             for timestep in timesteps:
                 #Calculate ideal frequencies
                 #chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False)
-                #t_scale,y_scale=chromatic_scale(0.250,24,60,dt=timestep/1000)
+                #t_true,y_true=chromatic_scale(0.250,24,60,dt=timestep/1000)
+                seq={i:freqs[i] for i in range(24,61)}
                 
                 #random sequence, 60bpm
-                rseq={i:rfreqs[i] for i in range(0,16)}
-                t_true,y_true=freq_generator(rseq,0.250,timestep/1000,ascent=True,descent=False)
+                #rseq={i:rfreqs[i] for i in range(0,16)}
+                t_true,y_true=freq_generator(seq,0.125,timestep/1000,ascent=False,descent=True)
                 
                 #Run (and time) CREPE
                 start=timelib.time()
@@ -165,47 +166,9 @@ if __name__=='__main__':
     timesteps_input=[ii for ii in range(5,105,5)]
     timesteps_input.insert(0,1)
     
-    #random sequence, 60bpm
-    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\rand\rand_1_60bpm.wav"
+    #chromatic scale, 60bpm
+    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\desc\desc_1_120bpm.wav"
     creper(filepath,
            models=['tiny', 'small', 'medium', 'large', 'full'], 
            timesteps=timesteps_input,
            conf_filters=[ii/divisions for ii in range(0,divisions,1)])
-
-    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\rand\rand_2_60bpm.wav"
-    creper(filepath,
-           models=['tiny', 'small', 'medium', 'large', 'full'], 
-           timesteps=timesteps_input,
-           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
-    
-    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\rand\rand_3_60bpm.wav"
-    creper(filepath,
-           models=['tiny', 'small', 'medium', 'large', 'full'], 
-           timesteps=timesteps_input,
-           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
-#    
-#    #random sequence, 120bpm
-#    t,y=freq_generator(rseq,0.125,0.01,ascent=True,descent=False)
-#    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\rand\rand_1_120bpm.wav"
-#    creper(filepath, 
-#           t,
-#           y,
-#           models=['tiny', 'small', 'medium', 'large', 'full'], 
-#           timesteps=timesteps_input,
-#           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
-#
-#    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\rand\rand_2_120bpm.wav"
-#    creper(filepath, 
-#           t,
-#           y,
-#           models=['tiny', 'small', 'medium', 'large', 'full'], 
-#           timesteps=timesteps_input,
-#           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
-#    
-#    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\rand\rand_3_120bpm.wav"
-#    creper(filepath, 
-#           t,
-#           y,
-#           models=['tiny', 'small', 'medium', 'large', 'full'], 
-#           timesteps=timesteps_input,
-#           conf_filters=[ii/divisions for ii in range(0,divisions,1)])

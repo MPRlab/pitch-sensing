@@ -169,6 +169,6 @@ if __name__=='__main__':
     #chromatic scale, 60bpm
     filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\desc\desc_1_120bpm.wav"
     creper(filepath,
-           models=['tiny', 'small', 'medium', 'large', 'full'], 
+           models=['tiny'], #'tiny', 'small', 'medium', 'large', 'full'
            timesteps=timesteps_input,
            conf_filters=[ii/divisions for ii in range(0,divisions,1)])

@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from os import linesep
 from note_frequencies import freqs
 from math import log
+from itertools import permutations
 
 #Define sample parameters
 # fs=16000           #Sample Rate (Hz) - CREPE uses 16kHz
@@ -44,6 +45,8 @@ def detection_stats(time, frequency, confidence, f2, t_switch, conf_threshold=0.
     return latency, cents_error
 
 def all_detection_stats(freq_list,crepe_model,crepe_step_size,conf_threshold=0.65,t_switch=1,t_total=2,fs=16000,plot=False):
+    '''Calculate latency and error of asending and descending frequency shifts for input frequencies.'''
+
     #For all ascending frequency shifts in range, print latency and error
     max_idx=len(freq_list)-1
     with open(f'{crepe_model}_'+f'{crepe_step_size}_'+r'all_detection_stats.txt', 'w') as file:
@@ -76,6 +79,30 @@ def all_detection_stats(freq_list,crepe_model,crepe_step_size,conf_threshold=0.6
                 print(f1,f2,latency,cents_error)
                     
                 file.write(f"f1: {f1}, f2: {f2}, latency: {latency}, cents_error: {cents_error}" + linesep)
+    file.close()
+
+def all_combinations_all_stats(freq_list,crepe_model,crepe_step_size,conf_threshold=0.65,t_switch=1,t_total=2,fs=16000,plot=False):
+    '''Calculate latency and error of all possible frequency shifts for list of input frequencies.'''
+
+    # Get all permutations of length 2 
+    perms = permutations(freq_list, 2)
+
+    with open(f'{crepe_model}_'+f'{crepe_step_size}_'+r'all_combinations_all_stats.txt', 'w') as file:
+        for perm in list(perms):
+            f1,f2=perm
+            #Generate sin wave with two frequencies
+            t,rec_array=sin_wave_shift(f1,f2,t_switch,t_total,fs,plot)
+
+            #Run CREPE on sample
+            time, frequency, confidence, _ = crepe.predict(audio=rec_array, sr=fs, 
+                                                           model_capacity=crepe_model,
+                                                           step_size=crepe_step_size)
+
+            latency, cents_error=detection_stats(time, frequency, confidence, f2, t_switch, conf_threshold)
+
+            print(f1,f2,latency,cents_error)
+                
+            file.write(f"f1: {f1}, f2: {f2}, latency: {latency}, cents_error: {cents_error}" + linesep)
     file.close()
 
 def plot(t,y):
@@ -116,12 +143,12 @@ def save_results(time, frequency, confidence,filename='results.txt'):
     file.close()
 
 if __name__=='__main__':
-
+    octave_freqs=[freqs[i] for i in range(37,49)]
     models=['tiny', 'small', 'medium', 'large', 'full']
     timesteps=[1,2,5,10]
 
     for model in models:
         for timestep in timesteps:
-            all_detection_stats(freqs,model,timestep,conf_threshold=0.65,t_switch=1,t_total=2,plot=False)
-
+        #all_detection_stats(freqs,model,timestep,conf_threshold=0.65,t_switch=1,t_total=2,plot=False)
+            all_combinations_all_stats(octave_freqs,model,timestep,conf_threshold=0.65,t_switch=1,t_total=2,plot=False)
     #Graph results

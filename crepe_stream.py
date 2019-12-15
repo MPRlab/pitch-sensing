@@ -8,7 +8,7 @@ import time as timelib
 import tensorflow as tf
 from multiprocessing import Process, Queue
 import csv
-import gtimer
+#import gtimer
 
 #Define sample parameters
 t_sample=0.2       #CREPE Sample Period
@@ -40,7 +40,7 @@ def reader_proc(queue,save_to_file=True):
 	                                                   model_capacity=crepe_model,
 	                                                   step_size=crepe_step_size)
 	        #Adjust time
-	        time+=(timelib.time)
+	        time+=timelib.time
 	        #time+=time_global
 	        i=0
 	        while i<len(time):
@@ -56,7 +56,7 @@ def reader_proc(queue,save_to_file=True):
 	        print('Reader & CREPE loop runtime: '+str(end-start)+' seconds.')
 	        #print('Read Queue: '+str(get_end-start)+' seconds.')
 
-@gt.wrap
+#@gt.wrap
 def writer(queue):
     '''Records audio sample (as nparray) and puts in queue.'''
     while True:

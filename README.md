@@ -28,8 +28,10 @@ pitch-sensing
 |
 +---MATLAB
 |       chromaticscale250summary05172019.mat
+|       CytherSerialConnection.mlx
 |       MPR_CREPE_Vis.m
 |       Summaryfull.mat
+|       wav_generator.m
 |
 \---notes
         chromatic_scale.py

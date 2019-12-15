@@ -9,7 +9,7 @@ import crepe
 import numpy as np
 import matplotlib.pyplot as plt
 from os import linesep
-from note_frequencies import freqs
+from notes.note_frequencies import freqs
 from math import log
 from itertools import permutations
 

@@ -6,7 +6,7 @@ https://github.com/marl/crepe
 """
 
 import crepe
-from chromatic_scale import chromatic_scale
+from notes.chromatic_scale import chromatic_scale
 from scipy.io import wavfile
 from math import log
 from statistics import mean, StatisticsError
@@ -14,7 +14,7 @@ import time as timelib
 import pandas as pd
 from os.path import splitext
 from pitch import freq_generator
-from note_frequencies import freqs
+from notes.note_frequencies import freqs
 
 def creper(filepath, 
            #t_true,

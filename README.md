@@ -42,6 +42,7 @@ pitch-sensing
 ```
 git clone https://github.com/MPRlab/pitch-sensing.git
 pip install -r requirements.txt
+#Replace the installed CREPE library with the pitch-sensing/crepe
 
 #Run CREPE for all model sizes, all timesteps (ms), and filters results by confidence level.
 python creper.py
@@ -51,8 +52,5 @@ python crepe_injection.py
 
 #Runs CREPE continuously on audio stream
 python crepe_stream.py
-
-#Explore PitchSense class (In Work)
-python PitchSense Demo.ipynb
 
 ```

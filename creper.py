@@ -17,8 +17,8 @@ from pitch import freq_generator
 from notes.note_frequencies import freqs
 
 def creper(filepath, 
-           #t_true,
-           #y_true,
+           t_true,
+           y_true,
            models=['tiny', 'small', 'medium', 'large', 'full'], 
            timesteps=[1, 5, 10, 20, 50, 100, 500, 1000],
            conf_filters=[ii/20 for ii in range(0,20,1)],
@@ -38,16 +38,7 @@ def creper(filepath,
     
     with pd.ExcelWriter(f'{filename}.xlsx') as writer:
         for model in models:
-            for timestep in timesteps:
-                #Calculate ideal frequencies
-                #chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False)
-                #t_true,y_true=chromatic_scale(0.250,24,60,dt=timestep/1000)
-                seq={i:freqs[i] for i in range(24,61)}
-                
-                #random sequence, 60bpm
-                #rseq={i:rfreqs[i] for i in range(0,16)}
-                t_true,y_true=freq_generator(seq,0.125,timestep/1000,ascent=False,descent=True)
-                
+            for timestep in timesteps:                
                 #Run (and time) CREPE
                 start=timelib.time()
                 time, frequency, confidence, _ = crepe.predict(audio, 
@@ -158,9 +149,15 @@ def creper(filepath,
                     
 if __name__=='__main__':
     #Calls creper function on example file
-
-    #chromatic sequence
-    #seq={i:freqs[i] for i in range(25,61)}
+    #Calculate ideal frequencies for chromatic scale
+    chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False)
+    t_true,y_true=chromatic_scale(0.250,24,60,dt=timestep/1000)
+    
+    #Calculate ideal frequencies for pre-recording "random" sequence
+    #seq={i:freqs[i] for i in range(24,61)}
+    #random sequence, 60bpm
+    #rseq={i:rfreqs[i] for i in range(0,16)}
+    #t_true,y_true=freq_generator(seq,0.125,timestep/1000,ascent=False,descent=True)
     
     divisions=20
     timesteps_input=[ii for ii in range(5,105,5)]
@@ -169,6 +166,8 @@ if __name__=='__main__':
     #chromatic scale, 60bpm
     filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\desc\desc_1_120bpm.wav"
     creper(filepath,
+           t_true, #True timestamps
+           y_true, #True frequencies at timestamps
            models=['tiny'], #'tiny', 'small', 'medium', 'large', 'full'
            timesteps=timesteps_input,
            conf_filters=[ii/divisions for ii in range(0,divisions,1)])

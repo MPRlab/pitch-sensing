@@ -4,7 +4,7 @@ Plots chromatic scale for given frequency range and IOI.
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from note_frequencies import freqs
+from notes.note_frequencies import freqs
 
 def chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False):
     '''Calculates and plots ideal frequency values over time 

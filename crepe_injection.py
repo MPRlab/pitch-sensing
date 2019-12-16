@@ -14,13 +14,14 @@ from math import log
 from itertools import permutations
 
 #Define sample parameters
-# fs=16000           #Sample Rate (Hz) - CREPE uses 16kHz
+fs=16000           #Sample Rate (Hz) - CREPE uses 16kHz
 crepe_step_size=1 #Step Size (ms)
-crepe_model='tiny' #Model Capacity ('tiny', 'small', 'medium', 'large', 'full')
-# f1=200             #Hz
-# f2=840           #Hz
-# t_switch=1       #seconds
-# t_total=2        #seconds
+crepe_models= ['tiny', 'small', 'medium', 'large', 'full'] #Model Capacity Choices
+crepe_model=crepe_models[0] #Model Capacity
+f1=200           #Hz
+f2=840           #Hz
+t_switch=1       #seconds
+t_total=2        #seconds
 
 def detection_stats(time, frequency, confidence, f2, t_switch, conf_threshold=0.8):
     '''Calculates CREPE detection time when shifting from f1 to f2.'''
@@ -73,9 +74,6 @@ def all_detection_stats(freq_list,crepe_model,crepe_step_size,conf_threshold=0.6
                                                                model_capacity=crepe_model,
                                                                step_size=crepe_step_size)
                 
-                #Save results
-                #save_results(time, frequency, confidence,filename='test.txt')
-
                 latency, cents_error, detected_frequency=detection_stats(time, frequency, confidence, f2, t_switch, conf_threshold)
 
                 print(f1,f2,latency,detected_frequency,cents_error)

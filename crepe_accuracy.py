@@ -16,13 +16,13 @@ from os.path import splitext
 from pitch import freq_generator
 from notes.note_frequencies import freqs
 
-def creper(filepath, 
-           t_true,
-           y_true,
-           models=['tiny', 'small', 'medium', 'large', 'full'], 
-           timesteps=[1, 5, 10, 20, 50, 100, 500, 1000],
-           conf_filters=[ii/20 for ii in range(0,20,1)],
-           noise_threshold=25):
+def crepe_accuracy(filepath, 
+		           t_true,
+		           y_true,
+		           models=['tiny', 'small', 'medium', 'large', 'full'], 
+		           timesteps=[1, 5, 10, 20, 50, 100, 500, 1000],
+		           conf_filters=[ii/20 for ii in range(0,20,1)],
+		           noise_threshold=25):
     '''Runs CREPE on .wav file for all model sizes,
     for all timesteps (ms), and filters results by confidence
     level.  Compares CREPE output with ideal frequencies from
@@ -148,9 +148,9 @@ def creper(filepath,
                     counter+=1
                     
 if __name__=='__main__':
-    #Calls creper function on example file
+    #Calls crepe_accuracy function on example file
     #Calculate ideal frequencies for chromatic scale
-    chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False)
+    #chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False)
     t_true,y_true=chromatic_scale(0.250,24,60,dt=timestep/1000)
     
     #Calculate ideal frequencies for pre-recording "random" sequence
@@ -165,9 +165,9 @@ if __name__=='__main__':
     
     #chromatic scale, 60bpm
     filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\desc\desc_1_120bpm.wav"
-    creper(filepath,
-           t_true, #True timestamps
-           y_true, #True frequencies at timestamps
-           models=['tiny'], #'tiny', 'small', 'medium', 'large', 'full'
-           timesteps=timesteps_input,
-           conf_filters=[ii/divisions for ii in range(0,divisions,1)])
+    crepe_accuracy(filepath,
+	               t_true, #True timestamps
+	               y_true, #True frequencies at timestamps
+	               models=['tiny'], #'tiny', 'small', 'medium', 'large', 'full'
+	               timesteps=timesteps_input,
+	               conf_filters=[ii/divisions for ii in range(0,divisions,1)])

@@ -3,8 +3,8 @@ Fundamental frequency detection.
 
 ```
 pitch-sensing
-|   creper.py
-|   crepe_injection.py
+|   crepe_accuracy.py
+|   crepe_latency.py
 |   crepe_stream.py
 |   pitch.py
 |   PitchSense Demo.ipynb
@@ -47,10 +47,10 @@ pip install -r requirements.txt
 #Replace the installed CREPE library with the files in pitch-sensing/crepe
 
 #Run CREPE for all model sizes, all timesteps (ms), and filters results by confidence level.
-python creper.py
+python crepe_accuracy.py
 
 #Finds pitch detection latency for CREPE
-python crepe_injection.py
+python crepe_latency.py
 
 #Runs CREPE continuously on audio stream
 python crepe_stream.py

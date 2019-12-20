@@ -33,11 +33,37 @@ pitch-sensing
 |       Summaryfull.mat
 |       wav_generator.m
 |
-\---notes
-        chromatic_scale.py
-        note_frequencies.py
-        random_frequencies.py
-        whamolaSample.txt
++---notes
+|       chromatic_scale.py
+|       note_frequencies.py
+|       random_frequencies.py
+|       whamolaSample.txt
+|
+\---samples
+    +---asc
+    |       asc_1_120bpm.wav
+    |       asc_1_60bpm.wav
+    |       asc_2_120bpm.wav
+    |       asc_2_60bpm.wav
+    |       asc_3_120bpm.wav
+    |       asc_3_60bpm.wav
+    |
+    +---desc
+    |       desc_1_120bpm.wav
+    |       desc_1_60bpm.wav
+    |       desc_2_120bpm.wav
+    |       desc_2_60bpm.wav
+    |       desc_3_120bpm.wav
+    |       desc_3_60bpm.wav
+    |
+    \---rand
+            rand_1_120bpm.wav
+            rand_1_60bpm.wav
+            rand_2_120bpm.wav
+            rand_2_60bpm.wav
+            rand_3_120bpm.wav
+            rand_3_60bpm.wav
+
 ```
 
 ### Instructions

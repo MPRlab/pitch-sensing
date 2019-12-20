@@ -163,8 +163,8 @@ if __name__=='__main__':
     timesteps_input=[ii for ii in range(5,105,5)]
     timesteps_input.insert(0,1)
     
-    #chromatic scale, 60bpm
-    filepath=r"G:\WPI\MPR Lab\Cyther\CREPE\Creper\samples\desc\desc_1_120bpm.wav"
+    #chromatic scale, 120bpm
+    filepath=r"samples\desc\desc_1_120bpm.wav"
     crepe_accuracy(filepath,
 	               t_true, #True timestamps
 	               y_true, #True frequencies at timestamps

@@ -48,7 +48,7 @@ def crepe_accuracy(filepath,
                 end=timelib.time()
                 
                 #Build dataset for pandas
-                cents_error=[1200*log(frequency[i]/y_true[i],2) for i in range(0,len(time))]
+                cents_error=[1200*log(frequency[i]/y_true[timestep][i],2) for i in range(0,len(time))]
                 
                 #Tag noise/data based on user-defined threshold
                 tags=[]
@@ -61,7 +61,7 @@ def crepe_accuracy(filepath,
                 data={'Time':time, 
                       'Frequency':frequency, 
                       'Confidence':confidence,
-                      'Ideal Frequency':y_true[0:len(time)],
+                      'Ideal Frequency':y_true[timestep][0:len(time)],
                       'Errors (Cents)':cents_error,
                       'Tag': tags}
                 
@@ -69,7 +69,7 @@ def crepe_accuracy(filepath,
                 cols=[label for label, _ in data.items()]
                 df=pd.DataFrame(data,columns=cols)
                 
-                #Write to excel                
+                #Write to excel in same folder as .wav file                
                 for conf_filter in conf_filters:
                     filtered_df=df[df['Confidence']>=conf_filter]
                     filtered_df.to_excel(writer, 
@@ -148,22 +148,30 @@ def crepe_accuracy(filepath,
                     counter+=1
                     
 if __name__=='__main__':
-    #Calls crepe_accuracy function on example file
-    #Calculate ideal frequencies for chromatic scale
-    #chromatic_scale(ioi,start_freq_idx,end_freq_idx,dt=0.01, plot=False)
-    t_true,y_true=chromatic_scale(0.250,24,60,dt=timestep/1000)
+    #Calls crepe_accuracy function on example file   
     
-    #Calculate ideal frequencies for pre-recording "random" sequence
-    #seq={i:freqs[i] for i in range(24,61)}
-    #random sequence, 60bpm
-    #rseq={i:rfreqs[i] for i in range(0,16)}
-    #t_true,y_true=freq_generator(seq,0.125,timestep/1000,ascent=False,descent=True)
-    
+    #Create list of timesteps
     divisions=20
     timesteps_input=[ii for ii in range(5,105,5)]
     timesteps_input.insert(0,1)
+
+    #Define frequency sequence
+    seq={i:freqs[i] for i in range(24,61)}
+    #random sequence, 60bpm
+    #rseq={i:rfreqs[i] for i in range(0,16)}
+
+    t_true={}
+    y_true={}
+    for timestep in timesteps_input:
+        #Calculate ideal frequencies for chromatic scale
+        #t_true[timestep],y_true[timestep]=chromatic_scale(ioi=0.125,start_freq_idx=24,
+        #                                                  end_freq_idx=60,dt=timestep/1000,plot=False)
+
+        #Calculate ideal frequencies for pre-recorded sequence
+        t_true[timestep],y_true[timestep]=freq_generator(sequence=seq,ioi=0.125,dt=timestep/1000,
+                                                         ascent=False,descent=True)
     
-    #chromatic scale, 120bpm
+    #Descending chromatic scale, 120bpm
     filepath=r"samples\desc\desc_1_120bpm.wav"
     crepe_accuracy(filepath,
 	               t_true, #True timestamps

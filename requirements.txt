@@ -12,7 +12,7 @@ h5py==2.9.0
 hmmlearn==0.2.2
 imageio==2.5.0
 jdcal==1.4.1
-joblib==0.13.2
+joblib==1.2.0
 Keras==2.1.5
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.0
